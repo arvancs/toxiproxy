@@ -7,15 +7,16 @@ import (
 	"time"
 
 	"github.com/Shopify/toxiproxy/pkg/stream"
+	"github.com/Shopify/toxiproxy/pkg/toxics"
 )
 
 func TestSlicerToxic(t *testing.T) {
 	data := []byte(strings.Repeat("hello world ", 40000)) // 480 kb
-	slicer := &SlicerToxic{AverageSize: 1024, SizeVariation: 512, Delay: 10}
+	slicer := &toxics.SlicerToxic{AverageSize: 1024, SizeVariation: 512, Delay: 10}
 
 	input := make(chan *stream.Chunk)
 	output := make(chan *stream.Chunk)
-	stub := NewToxicStub(input, output)
+	stub := toxics.NewToxicStub(input, output)
 
 	done := make(chan bool)
 	go func() {

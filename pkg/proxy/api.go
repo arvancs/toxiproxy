@@ -1,4 +1,4 @@
-package toxiproxy
+package proxy
 
 import (
 	"encoding/json"
@@ -9,9 +9,10 @@ import (
 	"os"
 	"strings"
 
-	"github.com/Shopify/toxiproxy/pkg/toxics"
 	"github.com/gorilla/mux"
 	"github.com/sirupsen/logrus"
+
+	"github.com/Shopify/toxiproxy/pkg/toxics"
 )
 
 type ApiServer struct {

@@ -2,7 +2,7 @@
 // testing the resiliency of Go applications.
 //
 // For use with Toxiproxy 2.x
-package toxiproxy
+package client
 
 import (
 	"bytes"
@@ -44,10 +44,10 @@ type Proxy struct {
 	created bool // True if this proxy exists on the server
 }
 
-// NewClient creates a new client which provides the base of all communication
+// New creates a new client which provides the base of all communication
 // with Toxiproxy. Endpoint is the address to the proxy (e.g. localhost:8474 if
 // not overriden)
-func NewClient(endpoint string) *Client {
+func New(endpoint string) *Client {
 	if strings.HasPrefix(endpoint, "https://") {
 		log.Fatal("the toxiproxy client does not support https")
 	} else if !strings.HasPrefix(endpoint, "http://") {

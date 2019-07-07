@@ -1,4 +1,4 @@
-package toxiproxy
+package proxy
 
 import (
 	"encoding/binary"
@@ -7,8 +7,8 @@ import (
 	"time"
 
 	"github.com/Shopify/toxiproxy/pkg/stream"
+	"github.com/Shopify/toxiproxy/pkg/testhelper"
 	"github.com/Shopify/toxiproxy/pkg/toxics"
-	"github.com/Shopify/toxiproxy/testhelper"
 )
 
 func TestToxicsAreLoaded(t *testing.T) {

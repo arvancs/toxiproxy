@@ -1,3 +1,3 @@
-package toxiproxy
+package proxy
 
 var Version = "git"
