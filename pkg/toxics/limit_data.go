@@ -1,6 +1,8 @@
 package toxics
 
-import "github.com/Shopify/toxiproxy/stream"
+import (
+	"github.com/Shopify/toxiproxy/pkg/stream"
+)
 
 // LimitDataToxic has limit in bytes
 type LimitDataToxic struct {
@@ -30,7 +32,7 @@ func (t *LimitDataToxic) Pipe(stub *ToxicStub) {
 			}
 
 			if bytesRemaining < int64(len(c.Data)) {
-				c = &stream.StreamChunk{
+				c = &stream.Chunk{
 					Timestamp: c.Timestamp,
 					Data:      c.Data[0:bytesRemaining],
 				}

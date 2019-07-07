@@ -2,13 +2,13 @@ package toxiproxy
 
 import (
 	"errors"
+	"net"
 	"sync"
 
-	"github.com/Shopify/toxiproxy/stream"
 	"github.com/sirupsen/logrus"
-	tomb "gopkg.in/tomb.v1"
+	"gopkg.in/tomb.v1"
 
-	"net"
+	"github.com/Shopify/toxiproxy/stream"
 )
 
 // Proxy represents the proxy in its entirity with all its links. The main

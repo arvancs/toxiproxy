@@ -1,4 +1,4 @@
-package toxics_test
+package toxics
 
 import (
 	"bytes"
@@ -7,8 +7,6 @@ import (
 	"strings"
 	"testing"
 	"time"
-
-	"github.com/Shopify/toxiproxy/toxics"
 )
 
 func TestBandwidthToxic(t *testing.T) {
@@ -41,7 +39,7 @@ func TestBandwidthToxic(t *testing.T) {
 	serverConn := <-serverConnRecv
 
 	rate := 1000 // 1MB/s
-	proxy.Toxics.AddToxicJson(ToxicToJson(t, "", "bandwidth", "upstream", &toxics.BandwidthToxic{Rate: int64(rate)}))
+	proxy.Toxics.AddToxicJson(ToxicToJson(t, "", "bandwidth", "upstream", &BandwidthToxic{Rate: int64(rate)}))
 
 	buf := []byte(strings.Repeat("hello world ", 40000)) // 480KB
 	go func() {
@@ -99,7 +97,7 @@ func BenchmarkBandwidthToxic100MB(b *testing.B) {
 		b.Error("Unable to dial TCP server", err)
 	}
 
-	proxy.Toxics.AddToxicJson(ToxicToJson(nil, "", "bandwidth", "upstream", &toxics.BandwidthToxic{Rate: 100 * 1000}))
+	proxy.Toxics.AddToxicJson(ToxicToJson(nil, "", "bandwidth", "upstream", &BandwidthToxic{Rate: 100 * 1000}))
 
 	b.SetBytes(int64(len(buf)))
 	b.ReportAllocs()

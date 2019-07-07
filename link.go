@@ -3,9 +3,10 @@ package toxiproxy
 import (
 	"io"
 
-	"github.com/Shopify/toxiproxy/stream"
-	"github.com/Shopify/toxiproxy/toxics"
 	"github.com/sirupsen/logrus"
+
+	"github.com/Shopify/toxiproxy/pkg/stream"
+	"github.com/Shopify/toxiproxy/pkg/toxics"
 )
 
 // ToxicLinks are single direction pipelines that connects an input and output via

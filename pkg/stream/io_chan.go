@@ -14,25 +14,25 @@ const (
 	NumDirections
 )
 
-// Stores a slice of bytes with its receive timestmap
-type StreamChunk struct {
+// Stores a slice of bytes with its receive timestamp
+type Chunk struct {
 	Data      []byte
 	Timestamp time.Time
 }
 
 // Implements the io.WriteCloser interface for a chan []byte
 type ChanWriter struct {
-	output chan<- *StreamChunk
+	output chan<- *Chunk
 }
 
-func NewChanWriter(output chan<- *StreamChunk) *ChanWriter {
+func NewChanWriter(output chan<- *Chunk) *ChanWriter {
 	return &ChanWriter{output}
 }
 
-// Write `buf` as a StreamChunk to the channel. The full buffer is always written, and error
+// Write `buf` as a Chunk to the channel. The full buffer is always written, and error
 // will always be nil. Calling `Write()` after closing the channel will panic.
 func (c *ChanWriter) Write(buf []byte) (int, error) {
-	packet := &StreamChunk{make([]byte, len(buf)), time.Now()}
+	packet := &Chunk{make([]byte, len(buf)), time.Now()}
 	copy(packet.Data, buf) // Make a copy before sending it to the channel
 	c.output <- packet
 	return len(buf), nil
@@ -46,14 +46,14 @@ func (c *ChanWriter) Close() error {
 
 // Implements the io.Reader interface for a chan []byte
 type ChanReader struct {
-	input     <-chan *StreamChunk
+	input     <-chan *Chunk
 	interrupt <-chan struct{}
 	buffer    []byte
 }
 
 var ErrInterrupted = fmt.Errorf("read interrupted by channel")
 
-func NewChanReader(input <-chan *StreamChunk) *ChanReader {
+func NewChanReader(input <-chan *Chunk) *ChanReader {
 	return &ChanReader{input, make(chan struct{}), []byte{}}
 }
 
@@ -91,7 +91,7 @@ func (c *ChanReader) Read(out []byte) (int, error) {
 			return n, nil
 		}
 	}
-	var p *StreamChunk
+	var p *Chunk
 	select {
 	case p = <-c.input:
 	case <-c.interrupt:

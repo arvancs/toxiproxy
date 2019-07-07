@@ -1,4 +1,4 @@
-package toxics_test
+package toxics
 
 import (
 	"bufio"
@@ -10,10 +10,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Shopify/toxiproxy"
-	"github.com/Shopify/toxiproxy/toxics"
 	"github.com/sirupsen/logrus"
-	tomb "gopkg.in/tomb.v1"
+	"gopkg.in/tomb.v1"
+
+	"github.com/Shopify/toxiproxy"
 )
 
 func init() {
@@ -89,7 +89,7 @@ func WithEchoProxy(t *testing.T, f func(proxy net.Conn, response chan []byte, pr
 	})
 }
 
-func ToxicToJson(t *testing.T, name, typeName, stream string, toxic toxics.Toxic) io.Reader {
+func ToxicToJson(t *testing.T, name, typeName, stream string, toxic Toxic) io.Reader {
 	data := map[string]interface{}{
 		"name":       name,
 		"type":       typeName,
@@ -167,8 +167,8 @@ func TestPersistentConnections(t *testing.T) {
 
 	serverConn := <-serverConnRecv
 
-	proxy.Toxics.AddToxicJson(ToxicToJson(t, "noop_up", "noop", "upstream", &toxics.NoopToxic{}))
-	proxy.Toxics.AddToxicJson(ToxicToJson(t, "noop_down", "noop", "downstream", &toxics.NoopToxic{}))
+	proxy.Toxics.AddToxicJson(ToxicToJson(t, "noop_up", "noop", "upstream", &NoopToxic{}))
+	proxy.Toxics.AddToxicJson(ToxicToJson(t, "noop_down", "noop", "downstream", &NoopToxic{}))
 
 	AssertEchoResponse(t, conn, serverConn)
 
@@ -224,11 +224,11 @@ func TestToxicAddRemove(t *testing.T) {
 				return
 			default:
 				if enabled {
-					proxy.Toxics.AddToxicJson(ToxicToJson(t, "noop_up", "noop", "upstream", &toxics.NoopToxic{}))
+					proxy.Toxics.AddToxicJson(ToxicToJson(t, "noop_up", "noop", "upstream", &NoopToxic{}))
 					proxy.Toxics.RemoveToxic("noop_down")
 				} else {
 					proxy.Toxics.RemoveToxic("noop_up")
-					proxy.Toxics.AddToxicJson(ToxicToJson(t, "noop_down", "noop", "downstream", &toxics.NoopToxic{}))
+					proxy.Toxics.AddToxicJson(ToxicToJson(t, "noop_down", "noop", "downstream", &NoopToxic{}))
 				}
 				enabled = !enabled
 			}

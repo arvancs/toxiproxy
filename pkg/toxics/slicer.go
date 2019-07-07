@@ -4,7 +4,7 @@ import (
 	"math/rand"
 	"time"
 
-	"github.com/Shopify/toxiproxy/stream"
+	"github.com/Shopify/toxiproxy/pkg/stream"
 )
 
 // The SlicerToxic slices data into multiple smaller packets
@@ -59,14 +59,14 @@ func (t *SlicerToxic) Pipe(stub *ToxicStub) {
 
 			chunks := t.chunk(0, len(c.Data))
 			for i := 1; i < len(chunks); i += 2 {
-				stub.Output <- &stream.StreamChunk{
+				stub.Output <- &stream.Chunk{
 					Data:      c.Data[chunks[i-1]:chunks[i]],
 					Timestamp: c.Timestamp,
 				}
 
 				select {
 				case <-stub.Interrupt:
-					stub.Output <- &stream.StreamChunk{
+					stub.Output <- &stream.Chunk{
 						Data:      c.Data[chunks[i]:],
 						Timestamp: c.Timestamp,
 					}

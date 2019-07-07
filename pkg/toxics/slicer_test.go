@@ -1,4 +1,4 @@
-package toxics_test
+package toxics
 
 import (
 	"bytes"
@@ -6,17 +6,16 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Shopify/toxiproxy/stream"
-	"github.com/Shopify/toxiproxy/toxics"
+	"github.com/Shopify/toxiproxy/pkg/stream"
 )
 
 func TestSlicerToxic(t *testing.T) {
 	data := []byte(strings.Repeat("hello world ", 40000)) // 480 kb
-	slicer := &toxics.SlicerToxic{AverageSize: 1024, SizeVariation: 512, Delay: 10}
+	slicer := &SlicerToxic{AverageSize: 1024, SizeVariation: 512, Delay: 10}
 
-	input := make(chan *stream.StreamChunk)
-	output := make(chan *stream.StreamChunk)
-	stub := toxics.NewToxicStub(input, output)
+	input := make(chan *stream.Chunk)
+	output := make(chan *stream.Chunk)
+	stub := NewToxicStub(input, output)
 
 	done := make(chan bool)
 	go func() {
@@ -34,7 +33,7 @@ func TestSlicerToxic(t *testing.T) {
 		}
 	}()
 
-	input <- &stream.StreamChunk{Data: data}
+	input <- &stream.Chunk{Data: data}
 
 	buf := make([]byte, 0, len(data))
 	reads := 0

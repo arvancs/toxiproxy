@@ -1,4 +1,4 @@
-package toxics_test
+package toxics
 
 import (
 	"bytes"

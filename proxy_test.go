@@ -9,9 +9,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Shopify/toxiproxy"
 	"github.com/sirupsen/logrus"
-	tomb "gopkg.in/tomb.v1"
+	"gopkg.in/tomb.v1"
+
+	"github.com/Shopify/toxiproxy"
 )
 
 func init() {

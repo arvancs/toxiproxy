@@ -3,7 +3,7 @@ package toxics
 import (
 	"time"
 
-	"github.com/Shopify/toxiproxy/stream"
+	"github.com/Shopify/toxiproxy/pkg/stream"
 )
 
 // The BandwidthToxic passes data through at a limited rate
@@ -32,7 +32,7 @@ func (t *BandwidthToxic) Pipe(stub *ToxicStub) {
 			for int64(len(p.Data)) > t.Rate*100 {
 				select {
 				case <-time.After(100 * time.Millisecond):
-					stub.Output <- &stream.StreamChunk{p.Data[:t.Rate*100], p.Timestamp}
+					stub.Output <- &stream.Chunk{p.Data[:t.Rate*100], p.Timestamp}
 					p.Data = p.Data[t.Rate*100:]
 					sleep -= 100 * time.Millisecond
 				case <-stub.Interrupt:
