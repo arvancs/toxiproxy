@@ -15,7 +15,7 @@ type LimitDataToxicState struct {
 
 func (t *LimitDataToxic) Pipe(stub *ToxicStub) {
 	state := stub.State.(*LimitDataToxicState)
-	var bytesRemaining = t.Bytes - state.bytesTransmitted
+	bytesRemaining := t.Bytes - state.bytesTransmitted
 
 	for {
 		select {
