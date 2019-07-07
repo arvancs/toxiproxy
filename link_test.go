@@ -6,9 +6,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Shopify/toxiproxy/stream"
+	"github.com/Shopify/toxiproxy/pkg/stream"
+	"github.com/Shopify/toxiproxy/pkg/toxics"
 	"github.com/Shopify/toxiproxy/testhelper"
-	"github.com/Shopify/toxiproxy/toxics"
 )
 
 func TestToxicsAreLoaded(t *testing.T) {
@@ -54,9 +54,9 @@ func TestStubInitializaationWithToxics(t *testing.T) {
 	} else if cap(link.stubs[len(link.stubs)-1].Output) != 0 {
 		t.Fatalf("Link output buffer was not initialized as 0: %d", cap(link.stubs[0].Output))
 	}
-	for i, toxic := range collection.chain[stream.Downstream] {
-		if cap(link.stubs[i].Input) != toxic.BufferSize {
-			t.Fatalf("%s buffer was not initialized as %d: %d", toxic.Type, toxic.BufferSize, cap(link.stubs[i].Input))
+	for i, tox := range collection.chain[stream.Downstream] {
+		if cap(link.stubs[i].Input) != tox.BufferSize {
+			t.Fatalf("%s buffer was not initialized as %d: %d", tox.Type, tox.BufferSize, cap(link.stubs[i].Input))
 		}
 	}
 }

@@ -36,14 +36,14 @@ func NewToxicLink(proxy *Proxy, collection *ToxicCollection, direction stream.Di
 	}
 
 	// Initialize the link with ToxicStubs
-	last := make(chan *stream.StreamChunk) // The first toxic is always a noop
+	last := make(chan *stream.Chunk) // The first toxic is always a noop
 	link.input = stream.NewChanWriter(last)
 	for i := 0; i < len(link.stubs); i++ {
-		var next chan *stream.StreamChunk
+		var next chan *stream.Chunk
 		if i+1 < len(link.stubs) {
-			next = make(chan *stream.StreamChunk, link.toxics.chain[direction][i+1].BufferSize)
+			next = make(chan *stream.Chunk, link.toxics.chain[direction][i+1].BufferSize)
 		} else {
-			next = make(chan *stream.StreamChunk)
+			next = make(chan *stream.Chunk)
 		}
 
 		link.stubs[i] = toxics.NewToxicStub(last, next)
@@ -92,7 +92,7 @@ func (link *ToxicLink) Start(name string, source io.Reader, dest io.WriteCloser)
 func (link *ToxicLink) AddToxic(toxic *toxics.ToxicWrapper) {
 	i := len(link.stubs)
 
-	newin := make(chan *stream.StreamChunk, toxic.BufferSize)
+	newin := make(chan *stream.Chunk, toxic.BufferSize)
 	link.stubs = append(link.stubs, toxics.NewToxicStub(newin, link.stubs[i-1].Output))
 
 	// Interrupt the last toxic so that we don't have a race when moving channels

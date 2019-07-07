@@ -8,7 +8,7 @@ import (
 	"github.com/sirupsen/logrus"
 	"gopkg.in/tomb.v1"
 
-	"github.com/Shopify/toxiproxy/stream"
+	"github.com/Shopify/toxiproxy/pkg/stream"
 )
 
 // Proxy represents the proxy in its entirity with all its links. The main
